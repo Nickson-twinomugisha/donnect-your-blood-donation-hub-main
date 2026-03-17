@@ -43,7 +43,10 @@ export default function MedicalNotesPage() {
     queryKey: ["notes", page, pageSize, debouncedSearch], 
     queryFn: () => getMedicalNotes(page, pageSize, debouncedSearch) 
   });
-  const { data: donorsData, isLoading: loadingDonors } = useQuery({ queryKey: ["donors"], queryFn: getDonors });
+  const { data: donorsData, isLoading: loadingDonors } = useQuery({ 
+    queryKey: ["donors", "all"], 
+    queryFn: () => getDonors(0, 1000) 
+  });
   const donors = useMemo(() => donorsData?.donors || [], [donorsData]);
 
   const notes = notesData?.notes || [];
@@ -127,7 +130,7 @@ export default function MedicalNotesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold font-display">Medical Notes</h1>
           <p className="text-muted-foreground">{notes.length} notes</p>

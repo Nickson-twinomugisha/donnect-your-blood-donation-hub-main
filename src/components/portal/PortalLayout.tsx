@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useDonorAuth } from "@/contexts/DonorAuthContext";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Droplets, FlaskConical, LogOut, Heart } from "lucide-react";
+import { LayoutDashboard, Droplets, FlaskConical, LogOut } from "lucide-react";
 
 const navItems = [
   { to: "/portal/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -26,7 +26,7 @@ export default function PortalLayout() {
           {/* Brand */}
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-              <Heart className="h-4 w-4 text-primary-foreground fill-current" />
+              <Droplets className="h-4 w-4 text-primary-foreground" />
             </div>
             <span className="font-display font-bold text-base">Donnect</span>
             <span className="text-muted-foreground text-sm ml-1">/ Donor Portal</span>

@@ -272,9 +272,9 @@ export default function DonorsPage() {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Blood Type</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Center</TableHead>
-                <TableHead>Eligibility</TableHead>
+                <TableHead className="hidden md:table-cell">Phone</TableHead>
+                <TableHead className="hidden md:table-cell">Center</TableHead>
+                <TableHead className="hidden sm:table-cell">Eligibility</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -284,9 +284,9 @@ export default function DonorsPage() {
                   <TableRow key={i}>
                     <TableCell><Skeleton className="h-4 w-32" /></TableCell>
                     <TableCell><Skeleton className="h-5 w-10 rounded-full" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-32" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                    <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-24" /></TableCell>
+                    <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-32" /></TableCell>
+                    <TableCell className="hidden sm:table-cell"><Skeleton className="h-4 w-20" /></TableCell>
                     <TableCell></TableCell>
                   </TableRow>
                 ))
@@ -303,9 +303,9 @@ export default function DonorsPage() {
                     <TableRow key={donor.id} className="cursor-pointer hover:bg-secondary/50 group" onClick={() => navigate(`/donors/${donor.id}`)}>
                       <TableCell className="font-medium">{donor.fullName}</TableCell>
                       <TableCell><Badge variant="outline">{donor.bloodType}</Badge></TableCell>
-                      <TableCell className="text-muted-foreground">{donor.phone}</TableCell>
-                      <TableCell className="text-muted-foreground">{donor.donationCenter}</TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell text-muted-foreground">{donor.phone}</TableCell>
+                      <TableCell className="hidden md:table-cell text-muted-foreground">{donor.donationCenter}</TableCell>
+                      <TableCell className="hidden sm:table-cell">
                         {eligible ? (
                           <span className="flex items-center gap-1 text-success text-sm"><UserCheck className="h-3.5 w-3.5" />Eligible</span>
                         ) : (

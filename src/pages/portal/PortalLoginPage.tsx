@@ -4,7 +4,7 @@ import { useDonorAuth } from "@/contexts/DonorAuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Heart, AlertCircle, Loader2, ArrowLeft } from "lucide-react";
+import { AlertCircle, Loader2, ArrowLeft, Droplets } from "lucide-react";
 
 export default function PortalLoginPage() {
   const { donorLogin } = useDonorAuth();
@@ -37,7 +37,7 @@ export default function PortalLoginPage() {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary via-primary/80 to-red-900 flex-col justify-between p-12 text-white">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-            <Heart className="h-5 w-5 fill-current" />
+            <Droplets className="h-5 w-5" />
           </div>
           <span className="font-display font-bold text-xl">Donnect</span>
         </div>
@@ -79,8 +79,8 @@ export default function PortalLoginPage() {
 
           {/* Mobile logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <Heart className="h-4 w-4 text-white fill-current" />
+            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-md">
+              <Droplets className="w-5 h-5 text-white" />
             </div>
             <span className="font-display font-bold text-lg">Donnect</span>
           </div>

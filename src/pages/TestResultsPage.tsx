@@ -171,7 +171,7 @@ export default function TestResultsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold font-display">Test Results</h1>
           <p className="text-muted-foreground">{results.length} test records</p>
@@ -252,13 +252,13 @@ export default function TestResultsPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Donor</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead className="hidden sm:table-cell">Date</TableHead>
                 <TableHead>HIV</TableHead>
-                <TableHead>Hep B</TableHead>
-                <TableHead>Hep C</TableHead>
+                <TableHead className="hidden md:table-cell">Hep B</TableHead>
+                <TableHead className="hidden md:table-cell">Hep C</TableHead>
                 <TableHead>Syphilis</TableHead>
-                <TableHead>Blood Type</TableHead>
-                <TableHead>Hb</TableHead>
+                <TableHead className="hidden md:table-cell">Blood Type</TableHead>
+                <TableHead className="hidden lg:table-cell">Hb</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -281,13 +281,13 @@ export default function TestResultsPage() {
                 results.map(t => (
                   <TableRow key={t.id}>
                     <TableCell className="font-medium">{t.donorName}</TableCell>
-                    <TableCell className="text-muted-foreground">{new Date(t.date).toLocaleDateString()}</TableCell>
+                    <TableCell className="hidden sm:table-cell text-muted-foreground">{new Date(t.date).toLocaleDateString()}</TableCell>
                     <TableCell><StatusBadge status={t.hiv} /></TableCell>
-                    <TableCell><StatusBadge status={t.hepatitisB} /></TableCell>
-                    <TableCell><StatusBadge status={t.hepatitisC} /></TableCell>
+                    <TableCell className="hidden md:table-cell"><StatusBadge status={t.hepatitisB} /></TableCell>
+                    <TableCell className="hidden md:table-cell"><StatusBadge status={t.hepatitisC} /></TableCell>
                     <TableCell><StatusBadge status={t.syphilis} /></TableCell>
-                    <TableCell><StatusBadge status={t.bloodTypingConfirmation} /></TableCell>
-                    <TableCell className="text-muted-foreground">{t.hemoglobin ?? "—"}</TableCell>
+                    <TableCell className="hidden md:table-cell"><StatusBadge status={t.bloodTypingConfirmation} /></TableCell>
+                    <TableCell className="hidden lg:table-cell text-muted-foreground">{t.hemoglobin ?? "—"}</TableCell>
                     <TableCell>
                       {user?.role === "admin" && (
                         <DropdownMenu>

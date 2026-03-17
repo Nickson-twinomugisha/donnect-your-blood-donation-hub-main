@@ -223,9 +223,9 @@ export default function DonationsPage() {
                 <TableHead>Donor</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Blood Type</TableHead>
-                <TableHead>Volume</TableHead>
-                <TableHead>Center</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead className="hidden md:table-cell">Volume</TableHead>
+                <TableHead className="hidden md:table-cell">Center</TableHead>
+                <TableHead className="hidden sm:table-cell">Date</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -248,11 +248,11 @@ export default function DonationsPage() {
                 donations.map(d => (
                   <TableRow key={d.id} className="group cursor-pointer hover:bg-secondary/50">
                     <TableCell className="font-medium">{d.donorName}</TableCell>
-                    <TableCell className="capitalize">{typeLabel(d.type)}</TableCell>
+                    <TableCell className="capitalize">{d.type.replace("_", " ")}</TableCell>
                     <TableCell><Badge variant="outline">{d.bloodType}</Badge></TableCell>
-                    <TableCell>{d.volume}ml</TableCell>
-                    <TableCell className="text-muted-foreground">{d.center}</TableCell>
-                    <TableCell className="text-muted-foreground">{new Date(d.date).toLocaleDateString()}</TableCell>
+                    <TableCell className="hidden md:table-cell text-muted-foreground">{d.volume} ml</TableCell>
+                    <TableCell className="hidden md:table-cell text-muted-foreground">{d.center}</TableCell>
+                    <TableCell className="hidden sm:table-cell">{new Date(d.date).toLocaleDateString()}</TableCell>
                     <TableCell onClick={(e) => e.stopPropagation()}>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>

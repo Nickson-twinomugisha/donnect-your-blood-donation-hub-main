@@ -11,7 +11,7 @@ export default function LandingPage() {
       <header className="border-b border-border px-6 h-14 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-            <Heart className="h-4 w-4 text-white fill-current" />
+            <Droplets className="h-5 w-5 text-white" />
           </div>
           <span className="font-display font-bold text-base">Donnect</span>
         </div>
@@ -25,7 +25,7 @@ export default function LandingPage() {
 
         <div className="relative space-y-4 max-w-xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium border border-primary/20">
-            <Heart className="h-3 w-3 fill-current" />
+            <Droplets className="h-3.5 w-3.5" />
             Blood Donation Hub
           </div>
           <h1 className="text-4xl sm:text-5xl font-display font-bold leading-tight">
