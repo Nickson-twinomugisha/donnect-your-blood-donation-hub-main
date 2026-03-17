@@ -212,11 +212,20 @@ export async function deleteDonor(id: string): Promise<void> {
 
 // ─── Donations ────────────────────────────────────────────────────────────────
 
-export async function getDonations(page?: number, pageSize?: number): Promise<{ donations: Donation[]; count: number | null }> {
+export async function getDonations(
+  page?: number, 
+  pageSize?: number,
+  search?: string
+): Promise<{ donations: Donation[]; count: number | null }> {
   let query = supabase
     .from("donations")
-    .select("*", { count: "exact" })
-    .order("date", { ascending: false });
+    .select("*", { count: "exact" });
+
+  if (search) {
+    query = query.or(`donor_name.ilike.%${search}%,center.ilike.%${search}%`);
+  }
+
+  query = query.order("date", { ascending: false });
 
   if (page !== undefined && pageSize !== undefined) {
     const from = page * pageSize;
@@ -285,13 +294,30 @@ export async function deleteDonation(id: string): Promise<void> {
 
 // ─── Test Results ─────────────────────────────────────────────────────────────
 
-export async function getTestResults(): Promise<TestResult[]> {
-  const { data, error } = await supabase
+export async function getTestResults(
+  page?: number, 
+  pageSize?: number,
+  search?: string
+): Promise<{ results: TestResult[]; count: number | null }> {
+  let query = supabase
     .from("test_results")
-    .select("*")
-    .order("date", { ascending: false });
+    .select("*", { count: "exact" });
+
+  if (search) {
+    query = query.or(`donor_name.ilike.%${search}%`);
+  }
+
+  query = query.order("date", { ascending: false });
+
+  if (page !== undefined && pageSize !== undefined) {
+    const from = page * pageSize;
+    const to = from + pageSize - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
   if (error) throw error;
-  return (data ?? []).map(mapTestResult);
+  return { results: (data ?? []).map(mapTestResult), count };
 }
 
 export async function getTestResultsByDonor(donorId: string): Promise<TestResult[]> {
@@ -354,13 +380,31 @@ export async function deleteTestResult(id: string): Promise<void> {
 
 // ─── Medical Notes ────────────────────────────────────────────────────────────
 
-export async function getMedicalNotes(): Promise<MedicalNote[]> {
-  const { data, error } = await supabase
+export async function getMedicalNotes(
+  page?: number, 
+  pageSize?: number,
+  search?: string
+): Promise<{ notes: MedicalNote[]; count: number | null }> {
+  let query = supabase
     .from("medical_notes")
-    .select("*")
-    .order("date", { ascending: false });
+    .select("*, donors!inner(full_name)", { count: "exact" });
+
+  // Handle donor_name search
+  if (search) {
+    query = query.or(`donors.full_name.ilike.%${search}%,author.ilike.%${search}%`);
+  }
+
+  query = query.order("date", { ascending: false });
+
+  if (page !== undefined && pageSize !== undefined) {
+    const from = page * pageSize;
+    const to = from + pageSize - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
   if (error) throw error;
-  return (data ?? []).map(mapMedicalNote);
+  return { notes: (data ?? []).map(mapMedicalNote), count };
 }
 
 export async function getMedicalNotesByDonor(donorId: string): Promise<MedicalNote[]> {

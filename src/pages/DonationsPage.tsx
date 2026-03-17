@@ -19,8 +19,15 @@ import { Search, Plus, MoreVertical, Edit2, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { useDebounce } from "@/hooks/use-debounce";
+
 export default function DonationsPage() {
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
+  const [page, setPage] = useState(0);
+  const pageSize = 10;
+  
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -29,10 +36,21 @@ export default function DonationsPage() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data: donationsData, isLoading: loadingDonations } = useQuery({ queryKey: ["donations"], queryFn: () => getDonations() });
+  // Reset page when search changes
+  useMemo(() => {
+    setPage(0);
+  }, [debouncedSearch]);
+
+  const { data: donationsData, isLoading: loadingDonations } = useQuery({ 
+    queryKey: ["donations", page, pageSize, debouncedSearch], 
+    queryFn: () => getDonations(page, pageSize, debouncedSearch) 
+  });
   const { data: donorsData, isLoading: loadingDonors } = useQuery({ queryKey: ["donors"], queryFn: () => getDonors() });
 
   const donations = useMemo(() => donationsData?.donations || [], [donationsData]);
+  const totalCount = donationsData?.count || 0;
+  const totalPages = Math.ceil(totalCount / pageSize);
+  
   const donors = useMemo(() => donorsData?.donors || [], [donorsData]);
 
   const form = useForm<DonationFormValues>({
@@ -82,13 +100,6 @@ export default function DonationsPage() {
     },
     onError: (err) => toast({ title: "Delete failed", description: err.message, variant: "destructive" })
   });
-
-  const filtered = useMemo(() => {
-    return donations.filter(d =>
-      d.donorName.toLowerCase().includes(search.toLowerCase()) ||
-      d.center.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [donations, search]);
 
   const onSubmit = (values: DonationFormValues) => {
     const donor = donors.find(d => d.id === values.donorId);
@@ -222,14 +233,14 @@ export default function DonationsPage() {
                     ))}
                   </TableRow>
                 ))
-              ) : filtered.length === 0 ? (
+              ) : donations.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center py-6 text-muted-foreground h-32">
                     No donations found.
                   </TableCell>
                 </TableRow>
               ) : (
-                filtered.map(d => (
+                donations.map(d => (
                   <TableRow key={d.id} className="group cursor-pointer hover:bg-secondary/50">
                     <TableCell className="font-medium">{d.donorName}</TableCell>
                     <TableCell className="capitalize">{typeLabel(d.type)}</TableCell>
@@ -259,6 +270,38 @@ export default function DonationsPage() {
               )}
             </TableBody>
           </Table>
+
+          {totalPages > 1 && (
+            <div className="py-4 border-t border-border px-4">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => setPage(p => Math.max(0, p - 1))}
+                      className={page === 0 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                  {Array.from({ length: totalPages }).map((_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink 
+                        isActive={page === i} 
+                        onClick={() => setPage(i)}
+                        className="cursor-pointer"
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+                      className={page === totalPages - 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </CardContent>
       </Card>
 

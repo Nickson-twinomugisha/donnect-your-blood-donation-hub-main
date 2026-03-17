@@ -18,8 +18,15 @@ import { Search, Plus, MoreVertical, Edit2, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { useDebounce } from "@/hooks/use-debounce";
+
 export default function MedicalNotesPage() {
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
+  const [page, setPage] = useState(0);
+  const pageSize = 10;
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -27,8 +34,21 @@ export default function MedicalNotesPage() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data: notes = [], isLoading: loadingNotes } = useQuery({ queryKey: ["notes"], queryFn: getMedicalNotes });
-  const { data: donors = [], isLoading: loadingDonors } = useQuery({ queryKey: ["donors"], queryFn: getDonors });
+  // Reset page when search changes
+  useMemo(() => {
+    setPage(0);
+  }, [debouncedSearch]);
+
+  const { data: notesData, isLoading: loadingNotes } = useQuery({ 
+    queryKey: ["notes", page, pageSize, debouncedSearch], 
+    queryFn: () => getMedicalNotes(page, pageSize, debouncedSearch) 
+  });
+  const { data: donorsData, isLoading: loadingDonors } = useQuery({ queryKey: ["donors"], queryFn: getDonors });
+  const donors = useMemo(() => donorsData?.donors || [], [donorsData]);
+
+  const notes = notesData?.notes || [];
+  const totalCount = notesData?.count || 0;
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   const form = useForm<MedicalNoteFormValues>({
     resolver: zodResolver(medicalNoteSchema),
@@ -64,7 +84,6 @@ export default function MedicalNotesPage() {
       toast({ title: "Failed to update note", description: err instanceof Error ? err.message : "Error", variant: "destructive" });
     }
   });
-
   const deleteMutation = useMutation({
     mutationFn: deleteMedicalNote,
     onSuccess: () => {
@@ -80,12 +99,9 @@ export default function MedicalNotesPage() {
   const enrichedNotes = useMemo(() => {
     return notes.map(n => ({
       ...n,
-      donorName: donors.find(d => d.id === n.donorId)?.fullName || "Unknown",
-    })).filter(n =>
-      n.donorName.toLowerCase().includes(search.toLowerCase()) ||
-      n.content.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [notes, donors, search]);
+      donorName: (n as any).donors?.full_name || donors.find(d => d.id === n.donorId)?.fullName || "Unknown",
+    }));
+  }, [notes, donors]);
 
   const onSubmit = (values: MedicalNoteFormValues) => {
     if (editId) {
@@ -202,6 +218,38 @@ export default function MedicalNotesPage() {
           ))
         )}
       </div>
+
+      {totalPages > 1 && (
+        <div className="py-2">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious 
+                  onClick={() => setPage(p => Math.max(0, p - 1))}
+                  className={page === 0 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                />
+              </PaginationItem>
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink 
+                    isActive={page === i} 
+                    onClick={() => setPage(i)}
+                    className="cursor-pointer"
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext 
+                  onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+                  className={page === totalPages - 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
 
       <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
         <AlertDialogContent>

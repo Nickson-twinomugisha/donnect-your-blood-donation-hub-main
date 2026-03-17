@@ -1,0 +1,16 @@
+{
+  "name": "Donnect — Blood Donation Hub",
+  "short_name": "Donnect",
+  "description": "Modern blood donation management system",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#b91c1c",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ]
+}

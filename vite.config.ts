@@ -17,4 +17,30 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React core
+          "vendor-react": ["react", "react-dom", "react-router-dom"],
+          // Tanstack query
+          "vendor-query": ["@tanstack/react-query"],
+          // Supabase client
+          "vendor-supabase": ["@supabase/supabase-js"],
+          // Charts (large)
+          "vendor-recharts": ["recharts"],
+          // Radix UI primitives
+          "vendor-radix": [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-select",
+            "@radix-ui/react-alert-dialog",
+            "@radix-ui/react-tooltip",
+            "@radix-ui/react-tabs",
+          ],
+        },
+      },
+    },
+  },
 }));
+

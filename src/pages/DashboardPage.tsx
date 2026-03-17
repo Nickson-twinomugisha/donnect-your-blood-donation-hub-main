@@ -10,10 +10,11 @@ import { ComponentErrorBoundary } from "@/components/GlobalErrorBoundary";
 export default function DashboardPage() {
   const { data: donorsData, isLoading: donorsLoading } = useQuery({ queryKey: ["donors"], queryFn: () => getDonors() });
   const { data: donationsData, isLoading: donationsLoading } = useQuery({ queryKey: ["donations"], queryFn: () => getDonations() });
-  const { data: testResults = [], isLoading: testsLoading } = useQuery({ queryKey: ["test_results"], queryFn: getTestResults });
+  const { data: testResultsData, isLoading: testsLoading } = useQuery({ queryKey: ["test_results"], queryFn: () => getTestResults() });
 
   const donors = useMemo(() => donorsData?.donors || [], [donorsData]);
   const donations = useMemo(() => donationsData?.donations || [], [donationsData]);
+  const testResults = useMemo(() => testResultsData?.results || [], [testResultsData]);
   const isLoading = donorsLoading || donationsLoading || testsLoading;
 
   const currentMonth = useMemo(() => new Date().toISOString().substring(0, 7), []); // YYYY-MM (dynamic!)
