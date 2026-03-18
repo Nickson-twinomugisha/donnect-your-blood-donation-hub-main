@@ -76,8 +76,8 @@ export default function TestResultsPage() {
 
   const addMutation = useMutation({
     mutationFn: addTestResult,
-    onSuccess: (newResult) => {
-      queryClient.setQueryData(["test_results"], (old: TestResult[]) => [newResult, ...(old || [])]);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["test_results"] });
       setDialogOpen(false);
       form.reset();
       toast({ title: "Test results recorded" });
