@@ -65,7 +65,7 @@ export default function LandingPage() {
             </div>
           </button>
 
-          {/* Staff / Admin card */}
+          {/* Staff / Lab Technician card */}
           <button
             onClick={() => navigate("/login")}
             className="group text-left rounded-2xl border border-border bg-card hover:border-primary/40 hover:bg-primary/5 transition-all duration-200 p-6 flex flex-col gap-4 shadow-sm hover:shadow-md"
@@ -75,7 +75,7 @@ export default function LandingPage() {
             </div>
             <div>
               <h2 className="font-display font-bold text-lg mb-1 flex items-center gap-2">
-                Staff / Admin
+                Staff / Lab Technician
                 <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </h2>
               <p className="text-muted-foreground text-sm leading-relaxed">
@@ -83,7 +83,7 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-2 mt-auto">
-              {["Manage Donors", "Record Donations", "Admin Tools"].map((tag) => (
+              {["Manage Donors", "Record Donations", "Lab Technician Tools"].map((tag) => (
                 <span key={tag} className="text-xs bg-secondary px-2 py-0.5 rounded-full text-muted-foreground">
                   {tag}
                 </span>

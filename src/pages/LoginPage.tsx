@@ -69,7 +69,7 @@ export default function LoginPage() {
             <CardDescription>
               {mode === "login"
                 ? "Enter your credentials to access Donnect."
-                : "Register a new staff or admin account."}
+                : "Register a new staff or lab technician account."}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -95,7 +95,7 @@ export default function LoginPage() {
                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     >
                       <option value="staff">Staff</option>
-                      <option value="admin">Admin</option>
+                      <option value="admin">Lab Technician</option>
                     </select>
                   </div>
                 </>

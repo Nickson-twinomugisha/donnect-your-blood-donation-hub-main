@@ -65,7 +65,7 @@ export default function AppSidebar({ onClose, className }: AppSidebarProps) {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-sidebar-foreground truncate">{user?.name}</p>
-            <p className="text-xs text-muted-foreground capitalize">{user?.role}</p>
+            <p className="text-xs text-muted-foreground capitalize">{user?.role === "admin" ? "Lab Technician" : user?.role}</p>
           </div>
         </div>
         <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground" onClick={handleLogout}>

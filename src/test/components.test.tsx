@@ -42,6 +42,6 @@ describe('AppSidebar', () => {
     );
 
     expect(screen.getByText(/Test User/i)).toBeInTheDocument();
-    expect(screen.getByText(/admin/i)).toBeInTheDocument();
+    expect(screen.getByText(/lab technician/i)).toBeInTheDocument();
   });
 });
