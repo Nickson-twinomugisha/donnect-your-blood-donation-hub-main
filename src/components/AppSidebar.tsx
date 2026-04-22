@@ -8,8 +8,8 @@ const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, adminOnly: false },
   { to: "/donors", label: "Donors", icon: Users, adminOnly: false },
   { to: "/donations", label: "Donations", icon: Heart, adminOnly: false },
-  { to: "/test-results", label: "Test Results", icon: TestTube, adminOnly: false },
-  { to: "/medical-notes", label: "Medical Notes", icon: FileText, adminOnly: false },
+  { to: "/test-results", label: "Test Results", icon: TestTube, adminOnly: true },
+  { to: "/medical-notes", label: "Medical Notes", icon: FileText, adminOnly: true },
 ];
 
 interface AppSidebarProps {

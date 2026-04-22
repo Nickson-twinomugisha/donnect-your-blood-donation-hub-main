@@ -265,6 +265,7 @@ export default function DonorProfilePage() {
           </Card>
 
           {/* Test Results */}
+          {user?.role === "admin" && (
           <Card>
             <CardHeader><CardTitle className="font-display text-lg flex items-center gap-2"><AlertTriangle className="h-5 w-5 text-warning" />Test Results</CardTitle></CardHeader>
             <CardContent>
@@ -298,8 +299,10 @@ export default function DonorProfilePage() {
               </ComponentErrorBoundary>
             </CardContent>
           </Card>
+          )}
 
           {/* Medical Notes */}
+          {user?.role === "admin" && (
           <Card>
             <CardHeader><CardTitle className="font-display text-lg">Medical Notes</CardTitle></CardHeader>
             <CardContent className="space-y-4">
@@ -333,6 +336,7 @@ export default function DonorProfilePage() {
               </ComponentErrorBoundary>
             </CardContent>
           </Card>
+          )}
         </div>
       </div>
 

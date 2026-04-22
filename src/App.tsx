@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { DonorAuthProvider } from "@/contexts/DonorAuthContext";
 import AppLayout from "@/components/AppLayout";
-import { ProtectedRoute, LoginGuard } from "./components/ProtectedRoute";
+import { ProtectedRoute, LoginGuard, AdminRoute } from "./components/ProtectedRoute";
 import { GlobalErrorBoundary } from "./components/GlobalErrorBoundary";
 import { PortalProtectedRoute, PortalLoginGuard } from "./components/portal/PortalRoute";
 import PageLoader from "@/components/PageLoader";
@@ -61,8 +61,10 @@ const App = () => (
                     <Route path="/donors" element={<DonorsPage />} />
                     <Route path="/donors/:id" element={<DonorProfilePage />} />
                     <Route path="/donations" element={<DonationsPage />} />
-                    <Route path="/test-results" element={<TestResultsPage />} />
-                    <Route path="/medical-notes" element={<MedicalNotesPage />} />
+                    <Route element={<AdminRoute />}>
+                      <Route path="/test-results" element={<TestResultsPage />} />
+                      <Route path="/medical-notes" element={<MedicalNotesPage />} />
+                    </Route>
                   </Route>
 
                   {/* ── Donor portal ─────────────────────────────── */}
