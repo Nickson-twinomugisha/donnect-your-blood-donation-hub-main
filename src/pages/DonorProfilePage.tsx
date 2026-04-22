@@ -176,19 +176,19 @@ export default function DonorProfilePage() {
                   </div>
                 </div>
               </div>
+              {user?.role !== "admin" && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="h-8 w-8 -mt-2 -mr-2"><MoreVertical className="h-4 w-4" /></Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => setEditDonorOpen(true)}><Edit2 className="h-4 w-4 mr-2" />Edit Donor</DropdownMenuItem>
-                  {user?.role === "admin" && (
-                    <DropdownMenuItem onClick={() => setDeleteDonorId(donor.id)} className="text-destructive focus:bg-destructive/10">
-                      <Trash2 className="h-4 w-4 mr-2" />Delete Profile
-                    </DropdownMenuItem>
-                  )}
+                  <DropdownMenuItem onClick={() => setDeleteDonorId(donor.id)} className="text-destructive focus:bg-destructive/10">
+                    <Trash2 className="h-4 w-4 mr-2" />Delete Profile
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              )}
             </div>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
@@ -250,7 +250,7 @@ export default function DonorProfilePage() {
                       </div>
                       <div className="text-right flex items-center gap-2">
                         <span className="text-sm font-medium">{new Date(d.date).toLocaleDateString()}</span>
-                        {user?.role === "admin" && (
+                        {user?.role !== "admin" && (
                           <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => setDeleteDonationId(d.id)}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -278,11 +278,6 @@ export default function DonorProfilePage() {
                         <span className="text-sm font-medium">{new Date(t.date).toLocaleDateString()}</span>
                         <div className="flex items-center gap-2">
                           {t.hemoglobin && <span className="text-xs font-medium bg-secondary px-2 py-1 rounded-md">Hb: {t.hemoglobin} g/dL</span>}
-                          {user?.role === "admin" && (
-                            <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => setDeleteTestId(t.id)}>
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </Button>
-                          )}
                         </div>
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -321,11 +316,6 @@ export default function DonorProfilePage() {
                         <span className="text-xs font-medium">{n.author}</span>
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-muted-foreground">{new Date(n.date).toLocaleDateString()}</span>
-                          {(user?.role === "admin" || user?.name === n.author) && (
-                            <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => setDeleteNoteId(n.id)}>
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </Button>
-                          )}
                         </div>
                       </div>
                       <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">{n.content}</p>

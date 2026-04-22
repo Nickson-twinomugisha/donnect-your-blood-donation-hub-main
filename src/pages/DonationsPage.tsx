@@ -156,7 +156,9 @@ export default function DonationsPage() {
             form.reset({ donorId: "", date: new Date().toISOString().split('T')[0], type: "whole_blood", volume: 450, center: "" });
           }
         }}>
+          {user?.role !== "admin" && (
           <DialogTrigger asChild><Button><Plus className="h-4 w-4 mr-2" />Record Donation</Button></DialogTrigger>
+          )}
           <DialogContent>
             <DialogHeader><DialogTitle className="font-display">{editId ? "Edit Donation" : "Record New Donation"}</DialogTitle></DialogHeader>
             <Form {...form}>
@@ -254,6 +256,7 @@ export default function DonationsPage() {
                     <TableCell className="hidden md:table-cell text-muted-foreground">{d.center}</TableCell>
                     <TableCell className="hidden sm:table-cell">{new Date(d.date).toLocaleDateString()}</TableCell>
                     <TableCell onClick={(e) => e.stopPropagation()}>
+                      {user?.role !== "admin" && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
@@ -262,13 +265,12 @@ export default function DonationsPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => handleEdit(d)}><Edit2 className="h-4 w-4 mr-2" />Edit Donation</DropdownMenuItem>
-                          {user?.role === "admin" && (
-                            <DropdownMenuItem onClick={() => setDeleteId(d.id)} className="text-destructive focus:bg-destructive/10">
-                              <Trash2 className="h-4 w-4 mr-2" />Delete Donation
-                            </DropdownMenuItem>
-                          )}
+                          <DropdownMenuItem onClick={() => setDeleteId(d.id)} className="text-destructive focus:bg-destructive/10">
+                            <Trash2 className="h-4 w-4 mr-2" />Delete Donation
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))

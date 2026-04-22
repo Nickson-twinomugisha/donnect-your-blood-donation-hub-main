@@ -206,11 +206,6 @@ export default function MedicalNotesPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => handleEdit(n)}><Edit2 className="h-3.5 w-3.5 mr-2" />Edit Note</DropdownMenuItem>
-                        {user?.role === "admin" && (
-                          <DropdownMenuItem onClick={() => setDeleteId(n.id)} className="text-destructive focus:bg-destructive/10">
-                            <Trash2 className="h-3.5 w-3.5 mr-2" />Delete Note
-                          </DropdownMenuItem>
-                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>

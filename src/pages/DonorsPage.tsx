@@ -163,9 +163,11 @@ export default function DonorsPage() {
             form.reset({ fullName: "", dateOfBirth: "", phone: "", email: "", address: "", emergencyContactName: "", emergencyContactPhone: "", emergencyContactRelationship: "", donationCenter: "" });
           }
         }}>
+          {user?.role !== "admin" && (
           <DialogTrigger asChild>
             <Button><Plus className="h-4 w-4 mr-2" />Register Donor</Button>
           </DialogTrigger>
+          )}
           <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="font-display">{editId ? "Edit Donor" : "Register New Donor"}</DialogTitle>
@@ -313,6 +315,7 @@ export default function DonorsPage() {
                         )}
                       </TableCell>
                       <TableCell onClick={(e) => e.stopPropagation()}>
+                        {user?.role !== "admin" && (
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
@@ -321,13 +324,12 @@ export default function DonorsPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={(e) => handleEdit(donor, e as React.MouseEvent)}><Edit2 className="h-4 w-4 mr-2" />Edit Donor</DropdownMenuItem>
-                            {user?.role === "admin" && (
-                              <DropdownMenuItem onClick={() => setDeleteId(donor.id)} className="text-destructive focus:bg-destructive/10">
-                                <Trash2 className="h-4 w-4 mr-2" />Delete Profile
-                              </DropdownMenuItem>
-                            )}
+                            <DropdownMenuItem onClick={() => setDeleteId(donor.id)} className="text-destructive focus:bg-destructive/10">
+                              <Trash2 className="h-4 w-4 mr-2" />Delete Profile
+                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
+                        )}
                       </TableCell>
                     </TableRow>
                   );

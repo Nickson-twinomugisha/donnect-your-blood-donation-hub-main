@@ -298,9 +298,6 @@ export default function TestResultsPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => handleEdit(t)}><Edit2 className="h-4 w-4 mr-2" />Edit Results</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setDeleteId(t.id)} className="text-destructive focus:bg-destructive/10">
-                              <Trash2 className="h-4 w-4 mr-2" />Delete Record
-                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       )}
