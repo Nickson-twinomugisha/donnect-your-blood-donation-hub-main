@@ -469,7 +469,29 @@ export async function getLastDonationDate(donorId: string): Promise<string | nul
 
 export async function isEligibleToDonate(donorId: string): Promise<boolean> {
   const lastDate = await getLastDonationDate(donorId);
+
+  const { data: latestTest } = await supabase
+    .from("test_results")
+    .select("*")
+    .eq("donor_id", donorId)
+    .order("date", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (latestTest) {
+    const isAllPass = 
+      latestTest.hiv === 'pass' && 
+      latestTest.hepatitis_b === 'pass' && 
+      latestTest.hepatitis_c === 'pass' && 
+      latestTest.syphilis === 'pass';
+      
+    if (!isAllPass) return false;
+  } else if (lastDate) {
+    return false;
+  }
+
   if (!lastDate) return true;
+  
   const daysSince = Math.floor(
     (Date.now() - new Date(lastDate).getTime()) / (1000 * 60 * 60 * 24)
   );
