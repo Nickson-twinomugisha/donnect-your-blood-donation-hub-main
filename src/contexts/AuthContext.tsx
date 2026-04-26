@@ -138,7 +138,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
       options: {
         data: { name, role },
-        emailRedirectTo: "https://donnect.vercel.app/login/callback"
+        emailRedirectTo: "https://donnect.vercel.app/login"
       },
     });
     if (error) return { error: error.message };
